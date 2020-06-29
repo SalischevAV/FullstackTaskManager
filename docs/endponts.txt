@@ -1,0 +1,14 @@
+/api
+: get    /tasks                  view all tasks
+: get    /tasks?byDate           view all tasks sort by end Date
+: get    /tasks?byState          view all tasks sort by state
+: get    /tasks?byCompleate      view all compleate tasks
+: get    /tasks?byUnCompleate    view all uncompleate tasks
+
+: get    /tasks/id               view task by id
+
+:post    /tasks                  add new task
+
+:put    /task/id                 update task by id
+
+:delete /task/id                 delete task by id
