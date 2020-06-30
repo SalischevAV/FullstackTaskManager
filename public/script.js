@@ -13,11 +13,16 @@ const btnFtUncmp = document.getElementById("btnFtUncmp");
 const btnClrFt = document.getElementById("btnClrFt");
 let itemInfoRow = null;
 
+function formatDate(dateString){
+    let res = dateString.substring(0,9);
+        return res;
+}
+
 function createRow(item) {
     let tr = document.createElement("tr");
 
     let tdID = document.createElement("td");
-    tdID.innerText = item.id;
+    tdID.innerText = item._id;
     let tdDate = document.createElement("td");
     tdDate.innerText = item.expirationDate;
     let tdText = document.createElement("td");
@@ -49,7 +54,7 @@ function createRow(item) {
 }
 
 function replaceRow(row, item) {
-    row.children[0].innerText = item.id;
+    row.children[0].innerText = item._id;
     row.children[1].innerText = item.expirationDate;
     row.children[2].innerText = item.text;
     row.children[3].innerText = item.isComplete;
@@ -58,7 +63,9 @@ function replaceRow(row, item) {
 async function getAll(queryString) {
     const res = await fetch(`/api/items?sortBy=${queryString}`);
     const items = await res.json();
-    items.forEach((item) => createRow(item));
+    items.forEach((item) => {
+        createRow(item);    
+    });
 }
 
 async function create() {
@@ -87,7 +94,6 @@ async function update() {
         })
     });
     const item = await res.json();
-    console.log(item);
     replaceRow(itemInfoRow, item);
     btnCreate.classList.remove("btn-primary");
     btnCreate.classList.add("btn-success");
@@ -150,15 +156,15 @@ async function rowClickHandler(evt) {
 }
 
 window.addEventListener("load", getAll);
-window.addEventListener("click", (evt) => console.log(evt.target.tagName));
+//window.addEventListener("click", (evt) => console.log(evt.target.tagName));
 thDate.addEventListener("click", () => {
     itemsBody.innerHTML = "";
     getAll("date");
 });
-thComplete.addEventListener("click", () => {
+/*thComplete.addEventListener("click", () => {
     itemsBody.innerHTML = "";
     getAll("state");
-});
+});*/
 itemsBody.addEventListener("click", rowClickHandler);
 btnClear.addEventListener("click", deleteAll);
 btnCreate.addEventListener("click", () => {
@@ -169,9 +175,7 @@ btnCreate.addEventListener("click", () => {
     }
 });
 btnFtCmp.addEventListener("click", () => {
-    console.dir("Befor: " + itemsBody.innerHTML)
     itemsBody.innerHTML = "";
-    console.dir("After :" + itemsBody.innerHTML)
     getAll("complete");
 });
 btnFtUncmp.addEventListener("click", () => {

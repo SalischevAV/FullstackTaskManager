@@ -1,19 +1,19 @@
-//const Item = require("./Model/Item");
-const ToDoList = require("./Model/ToDoList");
-//const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const ToDoAPIController = require(__dirname + "/controllers/ToDoAPIController")
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/taskListDB", { useFindAndModify: false });
 
 
 
 const app = express();
 app.use(express.static(__dirname + "/public"));
 app.use("/api/items", bodyParser.json());
-app.use("/api/items/:id", (req, res, next) => {
+/*app.use("/api/items/:id", (req, res, next) => {
     req.id = Number(req.params.id);
     next();
-});
+});*/
 
 app.route("/api/items")
     .get(ToDoAPIController.getAll)
